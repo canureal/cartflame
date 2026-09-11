@@ -1,0 +1,40 @@
+services:
+  ministack:
+    image: ministackorg/ministack
+    restart: always
+    ports:
+      - "4566:4566"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - REDIS_HOST=redis
+  redis:
+    restart: always
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+  rabbitmq:
+    image: rabbitmq:latest
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      RABBITMQ_DEFAULT_USER: kalo
+      RABBITMQ_DEFAULT_PASS: kalo
+    configs:
+      - source: rabbitmq-plugins
+        target: /etc/rabbitmq/enabled_plugins
+    volumes:
+      - rabbitmq-lib:/var/lib/rabbitmq/
+      - rabbitmq-log:/var/log/rabbitmq
+configs:
+  rabbitmq-plugins:
+    content: "[rabbitmq_management]."
+
+volumes:
+  rabbitmq-lib:
+    driver: local
+  rabbitmq-log:
+    driver: local
