@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/products")
 public class AddProduct {
-   @Autowired
    private ProductRepository productRepository;
 
    @PostMapping

@@ -1,4 +1,4 @@
-package com.canureal.cartflame.auth;
+package com.canureal.cartflame.controllers;
 
 import com.canureal.cartflame.dtos.UserCrudDto;
 import com.canureal.cartflame.models.Users;
@@ -6,11 +6,7 @@ import com.canureal.cartflame.services.JwtService;
 import com.canureal.cartflame.services.UserCrudService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.jspecify.annotations.NonNull;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.Cookie;
 
 @RestController @RequestMapping("/api/auth")
@@ -39,4 +35,5 @@ public class UserCrudController {
 
         return dto;
     }
+
 }

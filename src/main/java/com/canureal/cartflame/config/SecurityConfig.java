@@ -1,4 +1,4 @@
-package com.canureal.cartflame.security;
+package com.canureal.cartflame.config;
 
 import com.canureal.cartflame.JwtFilter;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +15,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtFilter jwtFilter;
+
+    /// TODO: FIX THE PROTECTED ROUTES!!!!
+    /// THEY'RE A PROBLEM RN
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

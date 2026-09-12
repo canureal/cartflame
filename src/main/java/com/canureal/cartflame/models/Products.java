@@ -12,11 +12,15 @@ import java.io.Serializable;
 public class Products implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long itemId;
+    private Integer itemId;
 
     @Column(nullable = false)
-    private Integer numberOfItemsInStock;
+    private Integer itemQuantity;
 
     @Column(nullable = false)
     private String itemName;
+
+    // tag itemCategory in the controller .toUpperCase all time.
+    @Column(nullable = false)
+    private String itemCategory = "GENERAL";
 }
