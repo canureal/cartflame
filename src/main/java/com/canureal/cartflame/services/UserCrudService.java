@@ -1,15 +1,19 @@
 package com.canureal.cartflame.services;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.canureal.cartflame.dtos.UserCrudDto;
 import com.canureal.cartflame.models.Users;
 import com.canureal.cartflame.models.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Objects;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +44,20 @@ public class UserCrudService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "invalid password");
         }
 
+        return user;
+    }
+
+    // we will get the id from security context
+    public Users deleteUser(UUID userId, String password) {
+        Users user = usersRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "user with id " + userId + " not found"
+                ));
+        if(!passwordEncoder.matches(password, user.getPassword())) {
+            throw new HttpStatusCodeException(HttpStatus.UNAUTHORIZED, "invalid password");
+        }
+
+        usersRepository.deleteById(userId);
         return user;
     }
 }

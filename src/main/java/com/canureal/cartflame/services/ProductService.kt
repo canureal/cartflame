@@ -6,9 +6,9 @@ import com.canureal.cartflame.dtos.ProductDto
 import com.canureal.cartflame.dtos.EmailJobDto
 import com.canureal.cartflame.exceptions.ProductNotFoundException
 import com.canureal.cartflame.models.Products
-import com.rabbitmq.stream.amqp.UnsignedInteger
 import org.springframework.amqp.rabbit.core.RabbitTemplate
-import org.springframework.web.client.HttpStatusCodeException
+import org.springframework.http.HttpStatus
+import org.springframework.web.server.ResponseStatusException
 import java.util.Optional
 
 @Service
@@ -53,16 +53,24 @@ public class ProductService(
 
     public fun deleteProduct(id: Int, deleteQuantity: UInt) {
         val product = productRepository.findById(id)
-            .orElseThrow { ProductNotFoundException("Product with id $id not found") }
+            .orElseThrow { ProductNotFoundException("product with $id not found") }
+        val requestedQuantity = deleteQuantity.toInt()
 
-        if (deleteQuantity.toInt() > product.itemQuantity) {
+        if (requestedQuantity > product.itemQuantity) {
+            throw ResponseStatusException(
+                HttpStatus.BAD_REQUEST, "cannot remove $requestedQuantity items - only ${product.itemQuantity} in stock"
+            )
+        }
+        val remainingQuantity = product.itemQuantity - requestedQuantity
+
+        if (remainingQuantity == 0) {
             productRepository.deleteById(id)
         } else {
-            product.itemQuantity -= deleteQuantity.toInt()
+            product.itemQuantity = remainingQuantity
             productRepository.save(product)
         }
 
-        // les go send thy email
+        // let's go send thy email
         rabbitTemplate.convertAndSend(
             "email.exchange",
             "email.send",
@@ -72,7 +80,7 @@ public class ProductService(
                 body = """
                 Deleted item: ${product.itemName},
                 Quantity removed: $deleteQuantity,
-                Remaining quantity: ${product.itemQuantity},
+                Remaining quantity: $remainingQuantity,
                 Category: ${product.itemCategory},
             """.trimIndent(),
             )
