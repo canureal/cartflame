@@ -11,4 +11,9 @@ public class UserCrudDto {
          String email,
          String password
    ){}
+
+   public record LoginResponseDto(
+         String email,
+         String role
+   ) {}
 }

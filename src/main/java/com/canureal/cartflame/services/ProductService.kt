@@ -9,6 +9,7 @@ import com.canureal.cartflame.models.Products
 import com.rabbitmq.stream.amqp.UnsignedInteger
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.web.client.HttpStatusCodeException
+import java.util.Optional
 
 @Service
 public class ProductService(
@@ -44,6 +45,10 @@ public class ProductService(
 
     public fun getAllProduct(): List<Products> {
         return productRepository.findAll()
+    }
+
+    public fun getProductById(id: Int): Optional<Products> {
+        return productRepository.findById(id)
     }
 
     public fun deleteProduct(id: Int, deleteQuantity: UInt) {

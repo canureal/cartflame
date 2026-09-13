@@ -27,6 +27,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-webmvc")
     implementation("org.springframework.amqp:spring-rabbit-stream")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
     runtimeOnly("org.postgresql:postgresql")
     testImplementation("org.springframework.boot:spring-boot-starter-amqp-test")
     testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
@@ -43,7 +44,8 @@ dependencies {
     testImplementation(kotlin("test"))
     implementation("org.springframework.boot:spring-boot-starter-amqp")
     implementation("org.springframework.boot:spring-boot-starter-mail")
-    implementation("me.paulschwarz:spring-dotenv:4.0.0")
+    implementation("me.paulschwarz:springboot4-dotenv:5.1.0")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
 }
 
 tasks.withType<Test> {

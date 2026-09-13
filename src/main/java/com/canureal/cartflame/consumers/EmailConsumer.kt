@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 class EmailConsumer(
     private val emailService: EmailService,
 ) {
-    @RabbitListener(queues = ["email-service"])
+    @RabbitListener(queues = ["email.queue"])
     fun handleEmailJob(job: EmailJobDto) {
         emailService.sendEmail(job.to,job.subject,job.body)
     }

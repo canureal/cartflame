@@ -25,6 +25,9 @@ public class Users implements Serializable {
     @Column(nullable = false, unique = true)
     private String username;
 
+    @Column(nullable = false)
+    private String role = "USER";
+
     @Column(nullable = true)
-    private String profilePicUrl;
+    private String profilePicUrl = "";
 }

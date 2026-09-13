@@ -23,7 +23,7 @@ public class JwtService {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
     }
 
-    public String generateToken(UUID userId) {
+    public String generateToken(UUID userId, String role) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + expirationMs);
 
@@ -32,6 +32,7 @@ public class JwtService {
                 .issuedAt(now)
                 .expiration(expiry)
                 .signWith(signingKey())
+                .claim("role", role)
                 .compact();
     }
 
@@ -44,6 +45,17 @@ public class JwtService {
                 .getPayload();
 
         return UUID.fromString(claims.getSubject());
+    }
+
+    public String extractRole(String token) {
+        Claims claims = Jwts
+                .parser()
+                .verifyWith(signingKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+
+        return claims.get("role", String.class);
     }
 
     public boolean isTokenValid(String token) {
