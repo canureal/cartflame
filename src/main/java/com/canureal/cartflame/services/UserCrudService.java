@@ -9,7 +9,7 @@ import com.canureal.cartflame.models.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Objects;
@@ -54,7 +54,7 @@ public class UserCrudService {
                         HttpStatus.NOT_FOUND, "user with id " + userId + " not found"
                 ));
         if(!passwordEncoder.matches(password, user.getPassword())) {
-            throw new HttpStatusCodeException(HttpStatus.UNAUTHORIZED, "invalid password");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "invalid password");
         }
 
         usersRepository.deleteById(userId);
