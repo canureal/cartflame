@@ -8,6 +8,8 @@
 - Users can signup/siginin all the passwords are encrypted before going into the db.
 - Has rate limiting which uses redis.
 - Emails admin(role in database) whenever new product is added or deleted.
+- Has GlobalException
+- Containerized
 
 ## Stack
 - Spring boot as framework
